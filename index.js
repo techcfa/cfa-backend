@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parses form data
 app.use(cookieParser()); // Parses cookies
 app.use(cors()); // Enables CORS for all origins
 
-const SPREADSHEET_ID = '1YBfgN-NDo_0rFfiaF4zYn2nOgkUHqjBo2qeVneQJ6SU'; // Replace with your Sheet ID
+const SPREADSHEET_ID = '1fsiaBNAbwX92V4nhO_UQUai9g_EvDyFGdx215DvZcdA'; // Your actual Sheet ID
 
 // Create headers in the sheet (run once)
 app.get('/create-headers', async (req, res) => {
