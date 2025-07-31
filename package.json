@@ -1,25 +1,38 @@
 {
-  "name": "tech-form",
+  "name": "cfa-backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
     "prod": "NODE_ENV=production node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "seed": "node scripts/seedData.js",
+    "test": "node test/test-basic.js"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Cyber Fraud Awareness Backend API",
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.772.0",
     "axios": "^1.8.4",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
     "form-data": "^4.0.2",
-    "googleapis": "^148.0.0"
+    "googleapis": "^148.0.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
+    "multer": "^1.4.5-lts.1",
+    "razorpay": "^2.9.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "twilio": "^4.19.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
