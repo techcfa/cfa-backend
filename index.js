@@ -358,3 +358,50 @@ const startServer = async () => {
 };
 
 startServer();
+
+// Dev utility: list all registered routes (methods + paths)
+function collectRoutes(appInstance) {
+  const routes = [];
+  const stack = appInstance._router?.stack || [];
+
+  const walk = (layer, prefix = '') => {
+    if (layer.route && layer.route.path) {
+      const methods = Object.keys(layer.route.methods)
+        .filter((m) => layer.route.methods[m])
+        .map((m) => m.toUpperCase());
+      routes.push({ methods, path: prefix + layer.route.path });
+    } else if (layer.name === 'router' && layer.handle?.stack) {
+      const subPrefix = prefix + (layer.regexp?.fast_star ? '' : (layer.regexp?.fast_slash ? '' : ''));
+      layer.handle.stack.forEach((l) => walk(l, prefix));
+    } else if (layer.handle?.stack) {
+      layer.handle.stack.forEach((l) => walk(l, prefix));
+    }
+  };
+
+  stack.forEach((layer) => walk(layer, ''));
+  // Deduplicate
+  const seen = new Set();
+  return routes.filter((r) => {
+    const key = r.methods.sort().join(',') + ' ' + r.path;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+// Expose routes in development and log them once on startup
+if (process.env.NODE_ENV !== 'production') {
+  app.get('/_routes', (req, res) => {
+    res.json({ routes: collectRoutes(app) });
+  });
+
+  setTimeout(() => {
+    try {
+      const list = collectRoutes(app);
+      console.log(`Registered endpoints (${list.length}):`);
+      list.forEach((r) => console.log(`  ${r.methods.join(',')} ${r.path}`));
+    } catch (e) {
+      console.warn('Could not list routes:', e.message);
+    }
+  }, 500);
+}
